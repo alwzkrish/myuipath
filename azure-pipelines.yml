@@ -1,0 +1,34 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool: Default
+
+steps:
+- task: UiPathPack@2
+  inputs:
+    versionType: 'AutoVersion'
+    projectJsonPath: '$(Build.SourcesDirectory)'
+    outputType: 'Process'
+    orchestratorConnection: 'Dev_Test'
+    outputPath: '$(Build.ArtifactStagingDirectory)\Output'
+    traceLevel: 'Information'
+
+    
+- task: PublishBuildArtifacts@1
+  inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'demo'
+        publishLocation: 'Container'
+
+- task: UiPathDeploy@2
+  inputs:
+    orchestratorConnection: 'Dev_Test'
+    packagesPath: '$(Build.ArtifactStagingDirectory)\Output'
+    folderName: 'test'
+    entryPoints: 'Main.xaml'
+    traceLevel: 'Information'
