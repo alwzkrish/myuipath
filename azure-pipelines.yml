@@ -29,6 +29,6 @@ steps:
   inputs:
     orchestratorConnection: 'Dev_Test'
     packagesPath: '$(Build.ArtifactStagingDirectory)\Output'
-    folderName: 'test'
+    folderName: 'Test'
+    environments: 'test'
     entryPoints: 'Main.xaml'
-    traceLevel: 'Information'
